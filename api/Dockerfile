@@ -11,6 +11,7 @@ ENV PYTHONDONTWRITEBYTECODE=true \
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
 RUN apt-get -y update && apt-get -y install \
+        ninja-build \
         python3-dev python3-pip \
         curl \
         build-essential \
