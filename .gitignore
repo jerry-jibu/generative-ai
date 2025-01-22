@@ -7,6 +7,7 @@ venv_backup/
 notebooks/data/
 .ipynb_checkpoints/
 
+docker-compose-local.yml
 *.db
 *.faiss
 *faiss*.json

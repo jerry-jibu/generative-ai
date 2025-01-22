@@ -25,16 +25,18 @@ RUN apt-get -y update && apt-get -y install \
 
 WORKDIR /app
 COPY poetry.lock pyproject.toml ./
+COPY README.md .
 
 # COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
     # pip install -r requirements.txt
     poetry install
 
-ARG PROCESSOR=cpu
-ENV PROCESSOR=${PROCESSOR}
-COPY ./dependency-setup.sh .
-RUN ./dependency-setup.sh
+# ignore cuda for now
+#ARG PROCESSOR=cpu
+#ENV PROCESSOR=${PROCESSOR}
+#COPY ./dependency-setup.sh .
+#RUN ./dependency-setup.sh
 
 COPY src/ /app/src/
 
