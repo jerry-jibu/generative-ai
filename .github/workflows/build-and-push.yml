@@ -1,0 +1,40 @@
+name: Build Images
+
+on:
+    # Trigger the action manually from the UI
+    workflow_dispatch:
+    # Trigger the action when I create or push a `release/**` branch
+    push:
+      branches:
+        - 'master'
+
+env:
+    DOCKER_REGISTRY_URL: docker.io
+    DOCKER_REPO_NAME: jibutech
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+            token: ${{ secrets.GH_PAT }}
+        - name: Set up QEMU
+          uses: docker/setup-qemu-action@v2
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v2
+        - name: Login to Docker registry
+          uses: docker/login-action@v2
+          with:
+            registry: docker.io
+            repo: jibutech
+            username: ${{ secrets.REGISTRY_USER }}
+            password: ${{ secrets.REGISTRY_PASS }}
+        - name: Build and push Docker images
+          run: |
+            path=`pwd`
+            cd ${path}/jupyter; docker buildx build  --platform linux/amd64 --tag ${DOCKER_REGISTRY_URL}/${DOCKER_REPO_NAME}/generative-ai-jupyter:latest --push .
+            cd ${path}/frontend; docker buildx build  --platform linux/amd64 --tag ${DOCKER_REGISTRY_URL}/${DOCKER_REPO_NAME}/generative-ai-frontend:latest --push .
+            cd ${path}/api; docker buildx build  --platform linux/amd64 --tag ${DOCKER_REGISTRY_URL}/${DOCKER_REPO_NAME}/generative-ai-api:latest --push .
+            cd ${path}/streamlit_app; docker buildx build  --platform linux/amd64 --tag ${DOCKER_REGISTRY_URL}/${DOCKER_REPO_NAME}/generative-ai-streamlit-app:latest --push .
