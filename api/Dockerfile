@@ -30,7 +30,7 @@ COPY README.md .
 # COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
     # pip install -r requirements.txt
-    poetry install
+    poetry install --no-root
 
 # ignore cuda for now
 #ARG PROCESSOR=cpu
