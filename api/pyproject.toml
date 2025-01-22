@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "inference-api"
+name = "api"
 version = "0.1.0"
 description = ""
 authors = ["Ryan <ryan.stewart113@gmail.com>"]
